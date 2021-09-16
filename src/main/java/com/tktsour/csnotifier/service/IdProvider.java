@@ -42,11 +42,14 @@ public class IdProvider {
         Optional<Long> maxId = announcementRepository.getMaxId();
 
         if(maxId.isPresent()) {
+            if(maxId.get().equals(id)){
+                return queue;
+            }
             Long i = maxId.get();
             while(id>=i){
                 queue.add(i++);
             }
-        }else {
+        } else {
             queue.add(id);
         }
 

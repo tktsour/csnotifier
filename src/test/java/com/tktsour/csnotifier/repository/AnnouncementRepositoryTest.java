@@ -3,6 +3,7 @@ package com.tktsour.csnotifier.repository;
 import com.tktsour.csnotifier.entity.Announcement;
 import com.tktsour.csnotifier.service.AnnouncementHtml;
 import com.tktsour.csnotifier.service.IdProvider;
+import com.tktsour.csnotifier.service.MailServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,18 +23,22 @@ class AnnouncementRepositoryTest {
     @Autowired
     AnnouncementRepository announcementRepository;
 
+    @Autowired
+    MailServiceImpl mailService;
+
     @Test
     public void test(){
-        List<Announcement> announcements = announcementHtml
-                .crawlAnnouncements(idProvider.produceQueue());
+        Announcement announcement = announcementRepository.findById(370L).get();
+        mailService.sendSimpleMessage(announcement);
 
-        announcementRepository.saveAll(announcements);
     }
 
     @Test
     public void test2(){
+        announcementRepository.deleteAll();
+
         Announcement announcement =
-                announcementHtml.crawlAnnouncement(350l);
+                announcementHtml.crawlAnnouncement(370l);
         announcementRepository.save(announcement);
 
     }

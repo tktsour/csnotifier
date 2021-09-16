@@ -45,7 +45,7 @@ public class IdProvider {
             if(maxId.get().equals(id)){
                 return queue;
             }
-            Long i = maxId.get();
+            long i = maxId.get() + 1;
             while(id>=i){
                 queue.add(i++);
             }

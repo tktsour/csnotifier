@@ -24,8 +24,7 @@ public class AnnouncementHtml {
 
     public List<Announcement> crawlAnnouncements(Queue<Long> ids){
         List<Announcement> announcements = new ArrayList<>(ids.size());
-        Iterator<Long> it = ids.iterator();
-        while(it.hasNext()){
+        while(!ids.isEmpty()){
             announcements.add(crawlAnnouncement(ids.remove()));
         }
 

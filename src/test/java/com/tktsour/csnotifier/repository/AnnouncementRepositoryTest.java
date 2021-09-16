@@ -24,6 +24,7 @@ class AnnouncementRepositoryTest {
 
     @Test
     public void test(){
+
         List<Announcement> announcements = announcementHtml
                 .crawlAnnouncements(idProvider.produceQueue());
 
@@ -32,15 +33,9 @@ class AnnouncementRepositoryTest {
 
     @Test
     public void test2(){
-        Announcement announcement = Announcement.builder()
-                .id(350l)
-                .title("Title")
-                .content("Content")
-                .lecturer("Lecturer")
-                .dateTime(LocalDateTime.now())
-                .build();
+        Announcement announcement =
+                announcementHtml.crawlAnnouncement(350l);
         announcementRepository.save(announcement);
-
 
     }
 

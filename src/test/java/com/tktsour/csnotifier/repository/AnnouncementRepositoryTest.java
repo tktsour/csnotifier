@@ -24,7 +24,8 @@ class AnnouncementRepositoryTest {
 
     @Test
     public void test(){
-
+        announcementRepository.deleteAll();
+        test2();
         List<Announcement> announcements = announcementHtml
                 .crawlAnnouncements(idProvider.produceQueue());
 

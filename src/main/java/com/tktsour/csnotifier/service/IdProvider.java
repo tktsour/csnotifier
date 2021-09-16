@@ -40,12 +40,16 @@ public class IdProvider {
         Queue<Long> queue = new ArrayDeque<>();
         Long id = fetchId();
         Optional<Long> maxId = announcementRepository.getMaxId();
+
         if(maxId.isPresent()) {
-            for (Long i = maxId.get(); i >= id; i--) {
-                queue.add(i);
+            Long i = maxId.get();
+            while(id>=i){
+                queue.add(i++);
             }
+        }else {
+            queue.add(id);
         }
-        queue.add(id);
+
         return queue;
     }
 

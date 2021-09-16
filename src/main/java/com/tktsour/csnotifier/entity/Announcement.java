@@ -1,9 +1,8 @@
 package com.tktsour.csnotifier.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
@@ -13,10 +12,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class Announcement {
     @Id
     Long id;
     String title;
+    @Column(columnDefinition = "TEXT")
     String content;
+    String lecturer;
     LocalDateTime dateTime;
 }

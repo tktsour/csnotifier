@@ -4,13 +4,14 @@ import com.tktsour.csnotifier.runnable.CsnotifierRunnable;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 public class CsnotifierApplication {
-
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(CsnotifierApplication.class, args);

@@ -36,7 +36,7 @@ public class IdProvider {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return 0l;
+        return 0L;
     }
 
     public Queue<Long> produceQueue(){

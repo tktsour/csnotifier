@@ -37,17 +37,19 @@ public class CsnotifierRunnable implements Runnable{
         try {
             Queue<Long> idQueue = idProvider.produceQueue();
             System.out.println(idQueue);
-            List<Announcement> announcements = announcementHtml
-                    .crawlAnnouncements(idQueue);
+            Queue<Announcement> announcements = announcementHtml.crawlAnnouncements(idQueue);
 
             if(announcements.isEmpty()){
                 log.info("Announcements queue is empty.");
             }else{
                 log.info("Attempting to send announcements");
-                for (int i = 0; i < announcements.size(); i++) {
-                    mailService.sendSimpleMessage(announcements.get(i));
-                    log.info("Mail with id:%d sent successfully",announcements.get(i).getId());
+                while (!announcements.isEmpty()){
+                    mailService.sendSimpleMessage(announcements.remove());
                 }
+//                for (int i = 0; i < announcements.size(); i++) {
+//                    mailService.sendSimpleMessage(announcements.get(i));
+//                    log.info("Mail with id:%d sent successfully",announcements.get(i).getId());
+//                }
                 log.info("Attempting to persist all announcements");
                 announcementRepository.saveAll(announcements);
                 log.info("Announcements in Queue persisted successfully");

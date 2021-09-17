@@ -24,13 +24,11 @@ public class AnnouncementHtml {
             .lecturer("ERROR")
             .dateTime(LocalDateTime.now())
             .build();
-
-    public List<Announcement> crawlAnnouncements(Queue<Long> ids){
-        List<Announcement> announcements = new ArrayList<>(ids.size());
+    public Queue<Announcement> crawlAnnouncements(Queue<Long> ids){
+        Queue<Announcement> announcements = new ArrayDeque<>();
         while(!ids.isEmpty()){
             announcements.add(crawlAnnouncement(ids.remove()));
         }
-
         return announcements;
     }
 

@@ -16,7 +16,7 @@ public class CsnotifierApplication {
         ConfigurableApplicationContext context = SpringApplication.run(CsnotifierApplication.class, args);
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         service.scheduleAtFixedRate(context.getBean(CsnotifierRunnable.class),
-                0,5, TimeUnit.MINUTES);
+                0,10, TimeUnit.MINUTES);
     }
 
 }

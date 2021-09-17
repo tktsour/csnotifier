@@ -6,12 +6,14 @@ import com.tktsour.csnotifier.service.AnnouncementHtml;
 import com.tktsour.csnotifier.service.IdProvider;
 import com.tktsour.csnotifier.service.MailService;
 import com.tktsour.csnotifier.service.MailServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Queue;
 
+@Slf4j
 @Component
 public class CsnotifierRunnable implements Runnable{
 
@@ -34,25 +36,24 @@ public class CsnotifierRunnable implements Runnable{
     public void run() {
         try {
             Queue<Long> idQueue = idProvider.produceQueue();
-            System.out.println("queue produced succuesfully");
             System.out.println(idQueue);
             List<Announcement> announcements = announcementHtml
                     .crawlAnnouncements(idQueue);
-            System.out.println("announcements created");
 
             if(announcements.isEmpty()){
-                System.out.println("no new announcement");
+                log.info("Announcements queue is empty.");
             }else{
-                System.out.println("now sending announcements");
+                log.info("Attempting to send announcements");
                 for (int i = 0; i < announcements.size(); i++) {
                     mailService.sendSimpleMessage(announcements.get(i));
-                    System.out.println("sent announcement" + announcements.get(i).getId());
+                    log.info("Mail with id:%d sent successfully",announcements.get(i).getId());
                 }
+                log.info("Attempting to persist all announcements");
                 announcementRepository.saveAll(announcements);
-                System.out.println("announcements sent to db");
+                log.info("Announcements in Queue persisted successfully");
             }
-            System.out.println(announcements);
-            System.out.println("completed one cycle");
+            log.info("Announcements that were processed %s", announcements);
+            log.info("One cycle has completed");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -2,6 +2,7 @@ package com.tktsour.csnotifier.service;
 
 import com.tktsour.csnotifier.entity.Announcement;
 import com.tktsour.csnotifier.util.StringConstants;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.logging.Logger;
 
 @Service
+@Slf4j
 public class AnnouncementHtml {
 
     Announcement error = Announcement.builder()
@@ -21,19 +24,20 @@ public class AnnouncementHtml {
             .lecturer("ERROR")
             .dateTime(LocalDateTime.now())
             .build();
-
-    public List<Announcement> crawlAnnouncements(Queue<Long> ids){
-        List<Announcement> announcements = new ArrayList<>(ids.size());
+    public Queue<Announcement> crawlAnnouncements(Queue<Long> ids){
+        Queue<Announcement> announcements = new ArrayDeque<>();
         while(!ids.isEmpty()){
             announcements.add(crawlAnnouncement(ids.remove()));
         }
-
         return announcements;
     }
 
     public Announcement crawlAnnouncement(Long id){
         try {
+            log.info("Attempting connection with %s crawlAnnouncement(Long id)",StringConstants.ID_URL.concat(id.toString()));
             Document document = Jsoup.connect(StringConstants.ID_URL+id).get();
+            log.info("Connection established successfully");
+            log.info("Parsing necessary html elements");
             Element bodyElement = document.getElementById("j_idt33_editor");
             Element titleElement = document.select("h3").get(0);
             Element lecturerElement = document.getElementById("headerColumn");
@@ -45,6 +49,8 @@ public class AnnouncementHtml {
                             .lecturer(nameExtractor(lecturerElement.child(0).text()))
                             .dateTime(LocalDateTime.now())
                             .build();
+            log.info("Announcement object created with id:%d",announcement.getId());
+            log.info(announcement.toString());
             return announcement;
         } catch (IOException e) {
             e.printStackTrace();

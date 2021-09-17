@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -jar -Dserver.port=$PORT target/csnotifier-0.0.1-SNAPSHOT.jar.jar
+web: java $JAVA_OPTS -jar -Dserver.port=$PORT target/csnotifier-0.0.1-SNAPSHOT.jar

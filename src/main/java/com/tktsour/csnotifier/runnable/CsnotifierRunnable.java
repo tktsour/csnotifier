@@ -38,23 +38,24 @@ public class CsnotifierRunnable implements Runnable{
             Queue<Long> idQueue = idProvider.produceQueue();
             System.out.println(idQueue);
             Queue<Announcement> announcements = announcementHtml.crawlAnnouncements(idQueue);
-
             if(announcements.isEmpty()){
                 log.info("Announcements queue is empty.");
             }else{
                 log.info("Attempting to send announcements");
                 while (!announcements.isEmpty()){
-                    mailService.sendSimpleMessage(announcements.remove());
+                    Announcement announcement = announcements.remove();
+                    String id = announcement.getId().toString();
+                    log.info("Attempting to send announcement %s", id);
+
+                    mailService.sendSimpleMessage(announcement);
+                    log.info("Announcement sent successfully, now attempting to persist %s",id);
+
+                    announcementRepository.save(announcement);
+                    log.info("Announcement %s persisted successfully",id);
+                    log.info("Queue's state: %s", announcements.toString());
                 }
-//                for (int i = 0; i < announcements.size(); i++) {
-//                    mailService.sendSimpleMessage(announcements.get(i));
-//                    log.info("Mail with id:%d sent successfully",announcements.get(i).getId());
-//                }
-                log.info("Attempting to persist all announcements");
-                announcementRepository.saveAll(announcements);
-                log.info("Announcements in Queue persisted successfully");
+                log.info("Announcements in Queue processed successfully");
             }
-            log.info("Announcements that were processed %s", announcements);
             log.info("One cycle has completed");
         } catch (Exception e) {
             e.printStackTrace();

@@ -6,6 +6,7 @@ import com.tktsour.csnotifier.service.AnnouncementHtml;
 import com.tktsour.csnotifier.service.IdProvider;
 import com.tktsour.csnotifier.service.MailService;
 import com.tktsour.csnotifier.service.MailServiceImpl;
+import com.tktsour.csnotifier.util.StringConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,6 +39,9 @@ public class CsnotifierRunnable implements Runnable{
             Queue<Long> idQueue = idProvider.produceQueue();
             System.out.println(idQueue);
             Queue<Announcement> announcements = announcementHtml.crawlAnnouncements(idQueue);
+
+            announcements.removeIf(a -> a.getLecturer().equals(StringConstants.DUMMY_LECTURER));
+
             if(announcements.isEmpty()){
                 log.info("Announcements queue is empty.");
             }else{

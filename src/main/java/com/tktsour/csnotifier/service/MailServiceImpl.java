@@ -44,7 +44,7 @@ public class MailServiceImpl implements MailService{
         message.setTo(StringConstants.EMAIL_TO);
         message.setFrom(StringConstants.EMAIL_FROM);
         message.setSubject(StringConstants.SUBJECT_PREFIX + " " +announcement.getTitle() + " " + announcement.getLecturer());
-        message.setText(announcement.getContent());
+        message.setText(announcement.getContent() + "\n" + StringConstants.ID_URL+announcement.getId());
         log.info("Mail composed, attempting to send mail");
         javaMailSender.send(message);
         log.info("Mail sent successfully.");

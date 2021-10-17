@@ -11,6 +11,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
+// https://stackoverflow.com/questions/40742380/how-to-resolve-jsoup-error-unable-to-find-valid-certification-path-to-requested
 public class SSLHelper {
 
     static public Connection getConnection(String url){

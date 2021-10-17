@@ -35,7 +35,7 @@ public class AnnouncementHtml {
     public Announcement crawlAnnouncement(Long id){
         try {
             log.info("Attempting connection with %s crawlAnnouncement(Long id)",StringConstants.ID_URL.concat(id.toString()));
-            Document document = Jsoup.connect(StringConstants.ID_URL+id).get();
+            Document document = SSLHelper.getConnection(StringConstants.ID_URL+id).get();
             log.info("Connection established successfully");
             log.info("Parsing necessary html elements");
             Element bodyElement = document.getElementById("j_idt33_editor");

@@ -27,7 +27,7 @@ public class IdProvider {
     private Long fetchId(){
         try {
             log.info("Attempting connection with %s fetchId()",StringConstants.ANNOUNCEMENTS_URL);
-            Document document = Jsoup.connect(StringConstants.ANNOUNCEMENTS_URL).get();
+            Document document = SSLHelper.getConnection(StringConstants.ANNOUNCEMENTS_URL).get();
             log.info("Connection established successfully");
             log.info("Parsing necessary html elements");
             Element element = document.getElementsByAttributeValue("data-ri","0").get(0);
